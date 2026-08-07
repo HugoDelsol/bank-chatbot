@@ -12,12 +12,12 @@ export async function GET() {
       FROM conversations c
       LEFT JOIN messages m ON m.conversation_id = c.id
       GROUP BY c.id
-      ORDER BY c.started_at DESC
+      ORDER BY CASE WHEN c.status = 'escalated' THEN 0 ELSE 1 END, c.started_at DESC
     `);
 
         return Response.json({ conversations: rows });
     } catch (error) {
-        console.error(error);
+        console.error(error, "test");
         return Response.json({ error: error.message }, { status: 500 });
     }
 }

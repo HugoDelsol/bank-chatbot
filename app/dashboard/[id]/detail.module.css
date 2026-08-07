@@ -1,0 +1,33 @@
+.wrapper {
+    max-width: 900px;
+    margin: 40px auto;
+    font-family: Arial, sans-serif;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+}
+
+.senderUser {
+    color: #0070f3;
+    font-weight: bold;
+}
+
+.senderBot {
+    color: #555;
+    font-weight: bold;
+}
+
+.noCategory {
+    color: #aaa;
+    font-style: italic;
+}
