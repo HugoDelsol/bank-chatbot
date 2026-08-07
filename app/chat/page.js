@@ -8,12 +8,29 @@ export default function ChatPage() {
     { sender: "bot", content: "Bonjour, comment puis-je vous aider ?" },
   ]);
   const [input, setInput] = useState("");
+  const [conversationId, setConversationId] = useState(null);
 
-  function handleSend() {
+  async function handleSend() {
     if (!input.trim()) return;
 
+    const userMessage = input;
+    
     setMessages([...messages, { sender: "user", content: input }]);
     setInput("");
+
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: userMessage,
+        conversationId: conversationId,
+      }),
+    });
+
+    const data = await response.json();
+
+    setConversationId(data.conversationId);
+    setMessages((prev) => [...prev, { sender: 'bot', content: data.reply }]);
   }
 
   return (
@@ -33,14 +50,19 @@ export default function ChatPage() {
         ))}
       </div>
 
-      <div className={styles.inputRow}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSend();
+        }}
+        className={styles.inputRow}>
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Écris ton message..."
         />
         <button onClick={handleSend}>Envoyer</button>
-      </div>
-    </div>
+      </ form>
+    </ div>
   );
 }
